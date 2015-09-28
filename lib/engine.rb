@@ -16,7 +16,7 @@ module TVShowNameNormalizer
       dest = [File.join(File.dirname(path), tvshow.to_s), File.extname(path)].join
       puts "Normalizing:\n \t#{path} to\n \t#{dest}"
 
-      FileUtils.mv(path, dest)
+      FileUtils.mv(path, dest) if path != dest
     end
   end
 end
