@@ -13,7 +13,7 @@ module TVShowNameNormalizer
       tvshow = TVShow.from_path(path)
       raise "#{path} is invalid!" unless tvshow.valid?
 
-      dest = [File.join(File.dirname(path), tvshow.to_s), File.extname(path)].join('.')
+      dest = [File.join(File.dirname(path), tvshow.to_s), File.extname(path)].join
       puts "Normalizing:\n \t#{path} to\n \t#{dest}"
 
       FileUtils.mv(path, dest)
