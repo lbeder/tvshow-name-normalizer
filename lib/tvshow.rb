@@ -14,7 +14,7 @@ module TVShowNameNormalizer
     attr_accessor :name, :series, :episode
 
     def initialize(params)
-      self.name = params[:name]
+      self.name = params[:name].titleize
       self.series = params[:series]
       self.episode = params[:episode]
     end
