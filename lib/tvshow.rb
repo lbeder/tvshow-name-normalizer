@@ -5,7 +5,7 @@ module TVShowNameNormalizer
     CONTENT_SOURCE_FOLDER_TEST_REGEXP = /#{VIDEO_TYPE_NAMES.join('|')}/i.freeze
     CONTENT_SOURCE_REGEXP = /(\(|\[|\s)+(#{VIDEO_TYPE_NAMES.join('|')})(\)|\]|\s|$)+/i.freeze
     LIMITED_REGEXP = /LIMITED|LiMiTED$/.freeze
-    SESSION_ESP_REGEXP_1 = /S(\d{2})\s?E(\d{2})/i.freeze
+    SESSION_ESP_REGEXP_1 = /S(\d{1,2})\s?E(\d{1,2})/i.freeze
     SESSION_ESP_REGEXP_2 = /\s+(\d+)x(\d+)(\s|$)+/i.freeze
     SESSION_ESP_REGEXP_3 = /Season (\d+) Episode (\d+)/i.freeze
     SESSION_ESP_REGEXP_OF = /(\d+)\s?of\s?(\d+)/i.freeze
