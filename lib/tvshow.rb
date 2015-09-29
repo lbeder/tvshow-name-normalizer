@@ -47,8 +47,8 @@ module TVShowNameNormalizer
       # Try to extract the session and episode
       session = nil
       episode = nil
-      SESSION_REGEXPS.each do |session_regexP|
-        next unless name =~ session_regexP
+      SESSION_REGEXPS.each do |session_regexp|
+        next unless name =~ session_regexp
 
         name = $`
         session = Regexp.last_match[1].to_i
