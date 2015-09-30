@@ -70,11 +70,12 @@ module TVShowNameNormalizer
       end
 
       # Try to extract date.
-      date = if name =~ DATE_REGEXP
+      if name =~ DATE_REGEXP
         name = $`
-        DateTime.new(Regexp.last_match[1].to_i, Regexp.last_match[2].to_i, Regexp.last_match[3].to_i) 
+
+        date = DateTime.new(Regexp.last_match[1].to_i, Regexp.last_match[2].to_i, Regexp.last_match[3].to_i)
       else
-        nil
+        date = nil
       end
 
       name.strip!
