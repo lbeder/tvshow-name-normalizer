@@ -10,21 +10,29 @@ module TVShowNameNormalizer
     SESSION_ESP_REGEXP_3 = /Season (\d+) Episode (\d+)/i.freeze
     SESSION_ESP_REGEXP_OF = /(\d+)\s?of\s?(\d+)/i.freeze
     SESSION_REGEXPS = [SESSION_ESP_REGEXP_1, SESSION_ESP_REGEXP_2, SESSION_ESP_REGEXP_3].freeze
+    DATE_REGEXP = /(\d{4})[\.|-|_|\s](\d{2})[\.|-|_|\s](\d{2})/i.freeze
 
-    attr_accessor :name, :series, :episode
+    attr_accessor :name, :series, :episode, :date
 
     def initialize(params)
       self.name = params[:name].titleize
       self.series = params[:series]
       self.episode = params[:episode]
+      self.date = params[:date]
     end
 
     def valid?
-      [name, series, episode].all?(&:present?)
+      name.present? && (series? || date?)
     end
 
     def to_s
-      "#{name} - S#{format('%02d', series)}E#{format('%02d', episode)}"
+      if series?
+        "#{name} - S#{format('%02d', series)}E#{format('%02d', episode)}"
+      elsif date?
+        "#{name} - #{date.strftime('%F')}"
+      else
+        name
+      end
     end
 
     def self.from_path(path)
@@ -61,9 +69,27 @@ module TVShowNameNormalizer
         episode = Regexp.last_match[1].to_i
       end
 
+      # Try to extract date.
+      date = if name =~ DATE_REGEXP
+        name = $`
+        DateTime.new(Regexp.last_match[1].to_i, Regexp.last_match[2].to_i, Regexp.last_match[3].to_i) 
+      else
+        nil
+      end
+
       name.strip!
 
-      TVShow.new(name: name, series: session, episode: episode)
+      TVShow.new(name: name, series: session, episode: episode, date: date)
+    end
+
+    private
+
+    def series?
+      [series, episode].all?(&:present?)
+    end
+
+    def date?
+      date.present?
     end
   end
 end
