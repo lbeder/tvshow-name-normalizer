@@ -49,10 +49,10 @@ module TVShowNameNormalizer
       # Chop off any info about the movie format or source.
       name = $` if name =~ CONTENT_SOURCE_REGEXP
 
-      # Strip LIMITED off the end.  Note: This is case sensitive.
+      # Strip LIMITED off the end. Note: This is case sensitive.
       name = $` if name =~ LIMITED_REGEXP
 
-      # Try to extract the session and episode
+      # Try to extract the session and episode.
       session = nil
       episode = nil
       SESSION_REGEXPS.each do |session_regexp|
