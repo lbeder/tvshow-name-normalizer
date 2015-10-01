@@ -16,9 +16,11 @@ module TVShowNameNormalizer
       raise "#{path} is invalid!" unless tvshow.valid?
 
       [File.join(File.dirname(path), tvshow.to_s), File.extname(path)].join.tap do |dest|
-        puts "Normalizing:\n \t#{path} to\n \t#{dest}"
+        unless path == dest
+          puts "Normalizing:\n \t#{path} to\n \t#{dest}"
 
-        FileUtils.mv(path, dest, force: true)
+          FileUtils.mv(path, dest, force: true)
+        end
       end
     end
 
@@ -39,8 +41,12 @@ module TVShowNameNormalizer
               pathname = Pathname.new(dest)
               root_dir = pathname.parent.parent
 
-              puts "Moving:\n \t#{dest} to\n \t#{root_dir}"
-              FileUtils.mv(dest, root_dir, force: true)
+              unless dest == root_dir
+                puts "Moving:\n \t#{dest} to\n \t#{root_dir}"
+
+                FileUtils.mv(dest, root_dir, force: true)
+              end
+
               FileUtils.rm_r(pathname.parent)
             end
           elsif recursive
