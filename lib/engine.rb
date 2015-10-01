@@ -10,7 +10,7 @@ module TVShowNameNormalizer
 
     def normalize(path:)
       path = File.expand_path(path) if path
-      return  unless self.class.video?(path)
+      return unless self.class.video?(path)
 
       tvshow = TVShow.from_path(path)
       raise "#{path} is invalid!" unless tvshow.valid?
@@ -52,8 +52,6 @@ module TVShowNameNormalizer
         end
       end
     end
-
-    private
 
     def self.video?(path)
       File.file?(path) && VIDEO_EXTENSIONS.include?(File.extname(path)[1..-1])
