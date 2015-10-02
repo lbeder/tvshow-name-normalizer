@@ -19,7 +19,7 @@ module TVShowNameNormalizer
         unless path == dest
           puts "Normalizing:\n \t#{path} to\n \t#{dest}"
 
-          FileUtils.mv(path, dest, force: true)
+          FileUtils.mv(path, dest)
         end
       end
     end
@@ -44,7 +44,7 @@ module TVShowNameNormalizer
               unless dest == root_dir
                 puts "Moving:\n \t#{dest} to\n \t#{root_dir}"
 
-                FileUtils.mv(dest, root_dir, force: true)
+                FileUtils.mv(dest, root_dir)
               end
 
               FileUtils.rm_r(pathname.parent)
