@@ -29,7 +29,7 @@ module TVShowNameNormalizer
       raise ArgumentError, "#{path} isn't a directory or doesn't exist!" unless File.directory?(path)
 
       # Iterate over existing files (and first level directories, if requested).
-      Dir.glob(File.join(path, '*')).each do |src|
+      Dir.glob(File.join(self.class.escape_glob(path), '*')).each do |src|
         begin
           if File.file?(src)
             dest = normalize(path: src)
@@ -61,6 +61,10 @@ module TVShowNameNormalizer
 
     def self.video?(path)
       File.file?(path) && VIDEO_EXTENSIONS.include?(File.extname(path)[1..-1])
+    end
+
+    def self.escape_glob(s)
+      s.gsub(/[\\\{\}\[\]\*\?]/) {|x| "\\#{x}"}
     end
   end
 end
