@@ -5,12 +5,12 @@ module TVShowNameNormalizer
     CONTENT_SOURCE_FOLDER_TEST_REGEXP = /#{VIDEO_TYPE_NAMES.join('|')}/i.freeze
     CONTENT_SOURCE_REGEXP = /(\(|\[|\s)+(#{VIDEO_TYPE_NAMES.join('|')})(\)|\]|\s|$)+/i.freeze
     LIMITED_REGEXP = /LIMITED|LiMiTED$/.freeze
-    SESSION_ESP_REGEXP_1 = /S(\d{1,2})\s?E(\d{1,2})/i.freeze
-    SESSION_ESP_REGEXP_2 = /\s+(\d+)x(\d+)(\s|$)+/i.freeze
-    SESSION_ESP_REGEXP_3 = /Season (\d+) Episode (\d+)/i.freeze
-    SESSION_ESP_REGEXP_OF = /(\d+)\s?of\s?(\d+)/i.freeze
-    SESSION_ESP_REGEXP_0 = /\s?(\d+)0(\d+)\s?/i.freeze
-    SESSION_REGEXPS = [SESSION_ESP_REGEXP_1, SESSION_ESP_REGEXP_2, SESSION_ESP_REGEXP_3].freeze
+    SESSION_REGEXP_1 = /S(\d{1,2})\s?E(\d{1,2})/i.freeze
+    SESSION_REGEXP_2 = /\s+(\d+)x(\d+)(\s|$)+/i.freeze
+    SESSION_REGEXP_3 = /Season (\d+) Episode (\d+)/i.freeze
+    SESSION_REGEXP_OF = /(\d+)\s?of\s?(\d+)/i.freeze
+    SESSION_REGEXP_0 = /\s?(\d+)0(\d+)\s?/i.freeze
+    SESSION_REGEXPS = [SESSION_REGEXP_1, SESSION_REGEXP_2, SESSION_REGEXP_3].freeze
     DATE_REGEXP = /(\d{4})[\.|-|_|\s](\d{2})[\.|-|_|\s](\d{2})/i.freeze
 
     attr_accessor :name, :series, :episode, :date
@@ -64,13 +64,13 @@ module TVShowNameNormalizer
         episode = Regexp.last_match[2].to_i
       end
 
-      if session.nil? && name =~ SESSION_ESP_REGEXP_OF
+      if session.nil? && name =~ SESSION_REGEXP_OF
         name = $`
         session = 1
         episode = Regexp.last_match[1].to_i
       end
 
-      if session.nil? && name =~ SESSION_ESP_REGEXP_0
+      if session.nil? && name =~ SESSION_REGEXP_0
         name = $`
         session = Regexp.last_match[1].to_i
         episode = Regexp.last_match[2].to_i
