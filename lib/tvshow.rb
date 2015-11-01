@@ -70,12 +70,6 @@ module TVShowNameNormalizer
         episode = Regexp.last_match[1].to_i
       end
 
-      if session.nil? && name =~ SESSION_REGEXP_0
-        name = $`
-        session = Regexp.last_match[1].to_i
-        episode = Regexp.last_match[2].to_i
-      end
-
       # Try to extract date.
       if name =~ DATE_REGEXP
         name = $`
@@ -83,6 +77,12 @@ module TVShowNameNormalizer
         date = DateTime.new(Regexp.last_match[1].to_i, Regexp.last_match[2].to_i, Regexp.last_match[3].to_i)
       else
         date = nil
+      end
+
+      if session.nil? && name =~ SESSION_REGEXP_0
+        name = $`
+        session = Regexp.last_match[1].to_i
+        episode = Regexp.last_match[2].to_i
       end
 
       name.strip!
