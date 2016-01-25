@@ -47,7 +47,18 @@ module TVShowNameNormalizer
                 FileUtils.mv(dest, root_dir)
               end
 
-              FileUtils.rm_r(pathname.parent)
+              next unless pathname.parent
+
+              glob_path = File.join(self.class.escape_glob(pathname.parent), '*')
+              Dir.glob(glob_path).each do |path|
+                if File.file?(path)
+                  FileUtils.rm(path)
+                elsif Dir[File.join(self.class.escape_glob(path), '*')].empty?
+                  FileUtils.rm_r(path)
+                end
+              end
+
+              FileUtils.rm_r(pathname.parent) if Dir[glob_path].empty?
             end
           elsif recursive
             # Iterate over the files in the directory and normalize them.
@@ -64,6 +75,8 @@ module TVShowNameNormalizer
     end
 
     def self.escape_glob(s)
+      s = s.to_path if s.is_a?(Pathname)
+
       s.gsub(/[\\\{\}\[\]\*\?]/) {|x| "\\#{x}"}
     end
   end
