@@ -10,6 +10,7 @@ module TVShowNameNormalizer
     SESSION_REGEXP_3 = /Season (\d+) Episode (\d+)/i.freeze
     SESSION_REGEXP_OF = /(\d+)\s?of\s?(\d+)/i.freeze
     SESSION_REGEXP_0 = /\s?(\d+)0(\d+)\s?/i.freeze
+    SESSION_REGEXP_NO_DELIMITER = /\s?(\d{1})(\d+{1,2})\s?/i.freeze
     SESSION_REGEXPS = [SESSION_REGEXP_1, SESSION_REGEXP_2, SESSION_REGEXP_3].freeze
     DATE_REGEXP = /(\d{4})[\.|-|_|\s](\d{2})[\.|-|_|\s](\d{2})/i.freeze
 
@@ -66,8 +67,14 @@ module TVShowNameNormalizer
 
       if session.nil? && name =~ SESSION_REGEXP_OF
         name = $`
-        session = 1
-        episode = Regexp.last_match[1].to_i
+        session = Regexp.last_match[1].to_i
+        episode = Regexp.last_match[2].to_i
+      end
+
+      if session.nil? && name =~ SESSION_REGEXP_NO_DELIMITER
+        name = $`
+        session = Regexp.last_match[1].to_i
+        episode = Regexp.last_match[2].to_i
       end
 
       # Try to extract date.
